@@ -14,11 +14,9 @@ const { fetch: originalFetch } = window;
 window.fetch = async (...args) => {
   let [resource, config] = args;
   let response = await originalFetch(resource, config);
-
-	if(!resource.startsWith("https://bsky.social/xrpc/app.bsky.feed.getTimeline")) {
+  if(!resource.startsWith("https://bsky.social/xrpc/app.bsky.feed.getTimeline")) {
     return response
   }
-  console.log("ok we're doing it")
   var respData = await response.clone().json()
   var filtered = respData.feed.filter(x => x.post.author.did !== x.reason?.by.did)
 
